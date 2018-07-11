@@ -3,6 +3,8 @@
 ## Synopsis
 
 browser mouse effect using canvas
+
+#### showcase
 * circles
 
 ## Code Example
