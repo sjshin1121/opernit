@@ -1,6 +1,6 @@
 {
   "name": "opernit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "browser mouse effect using canvas",
   "homepage": "https://github.com/sjshin1121/opernit",
   "scripts": {
