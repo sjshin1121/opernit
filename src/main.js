@@ -1,0 +1,45 @@
+import Scene from './Scene.js';
+import RangeCircle from './RangeCircle.js';
+import { getRandomArbitrary } from './utility.js'
+
+const opernit = {};
+
+opernit.circles = ({
+  color = [
+    '#fffdb7',
+    '#aef4a4',
+    '#79b8d1',
+    '#e36488',
+  ],
+  size = 800,
+  effectRadius = 40,
+  minRadius = 1,
+  maxRadius = 3
+} = {}) => {
+
+  const scene = new Scene({
+    isWindowEvent: true
+  });
+  for (let i = 0, j = size; i < j; i++) {
+    const radius = getRandomArbitrary(minRadius, maxRadius);
+    const rangeCircle = new RangeCircle({
+      x: Math.random() * (window.innerWidth - radius * 2) + radius,
+      y: Math.random() * (window.innerHeight - radius * 2) + radius,
+      radius: radius,
+      minRadius: radius,
+      MaxRadius: effectRadius,
+      color: Array.isArray(color) ? color[Math.floor(Math.random() * color.length)] : color,
+      velocityX: (Math.random() - 0.5),
+      velocityY: (Math.random() - 0.5),
+    });
+    scene.addCircle(rangeCircle);
+  }
+  const animate = function () {
+    requestAnimationFrame(animate);
+    scene.render();
+  };
+
+  animate();
+};
+
+export default opernit;

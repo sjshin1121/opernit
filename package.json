@@ -1,0 +1,25 @@
+{
+  "name": "opernit",
+  "version": "0.0.1",
+  "description": "browser mouse effect using canvas",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "dev": "npm-run-all --parallel start watch",
+    "start": "serve",
+    "pretest": "npm run build"
+  },
+  "author": "seongjae.shin",
+  "license": "MIT",
+  "main": "dist/opernit.cjs.js",
+  "module": "dist/opernit.esm.js",
+  "browser": "dist/opernit.umd.js",
+  "devDependencies": {
+    "npm-run-all": "^4.1.3",
+    "rollup": "^0.62.0",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "serve": "^9.2.0"
+  }
+}
