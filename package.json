@@ -12,8 +12,6 @@
   },
   "author": "seongjae.shin",
   "license": "MIT",
-  "main": "dist/opernit.cjs.js",
-  "module": "dist/opernit.esm.js",
   "browser": "dist/opernit.umd.js",
   "devDependencies": {
     "npm-run-all": "^4.1.3",
