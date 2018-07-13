@@ -3,14 +3,15 @@ export default class Scene {
       el,
       width = window.innerWidth,
       height = window.innerHeight,
-      elStyle = 'position: fixed;\n' +
-                'top: 0;\n' +
-                'left: 0;\n' +
+      isWindowEvent = false,
+      eventNames = ['mousemove'],
+      elStyle = 'position: fixed;' +
+                'top: 0;' +
+                'left: 0;' +
                 'z-index: -1;',
-       isWindowEvent = false
   } = {}) {
     this._initialize(el, width, height, elStyle);
-    this._eventInitialize(isWindowEvent);
+    this._eventInitialize(isWindowEvent, eventNames);
   }
 
   _initialize (el, width, height, elStyle) {
@@ -31,18 +32,20 @@ export default class Scene {
     this.ctx = canvasEl.getContext('2d');
   }
 
-  _eventInitialize (isWindowEvent) {
-    const eventName = 'mousemove';
+  _eventInitialize (isWindowEvent, eventNames) {
     const listener = e => {
+      this.mousePosition.type = e.type;
       this.mousePosition.x = e.x;
       this.mousePosition.y = e.y;
     };
 
-    if (isWindowEvent) {
-      window.addEventListener(eventName, listener)
-    } else {
-      this.canvasEl.addEventListener(eventName, listener)
-    }
+    eventNames.forEach(eventName => {
+      if (isWindowEvent) {
+        window.addEventListener(eventName, listener)
+      } else {
+        this.canvasEl.addEventListener(eventName, listener)
+      }
+    });
     window.addEventListener('resize', () => {
       this.canvasEl.width = window.innerWidth;
       this.canvasEl.height = window.innerHeight;

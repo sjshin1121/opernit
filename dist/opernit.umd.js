@@ -9,14 +9,15 @@
         el,
         width = window.innerWidth,
         height = window.innerHeight,
-        elStyle = 'position: fixed;\n' +
-                  'top: 0;\n' +
-                  'left: 0;\n' +
+        isWindowEvent = false,
+        eventNames = ['mousemove'],
+        elStyle = 'position: fixed;' +
+                  'top: 0;' +
+                  'left: 0;' +
                   'z-index: -1;',
-         isWindowEvent = false
     } = {}) {
       this._initialize(el, width, height, elStyle);
-      this._eventInitialize(isWindowEvent);
+      this._eventInitialize(isWindowEvent, eventNames);
     }
 
     _initialize (el, width, height, elStyle) {
@@ -37,18 +38,20 @@
       this.ctx = canvasEl.getContext('2d');
     }
 
-    _eventInitialize (isWindowEvent) {
-      const eventName = 'mousemove';
+    _eventInitialize (isWindowEvent, eventNames) {
       const listener = e => {
+        this.mousePosition.type = e.type;
         this.mousePosition.x = e.x;
         this.mousePosition.y = e.y;
       };
 
-      if (isWindowEvent) {
-        window.addEventListener(eventName, listener);
-      } else {
-        this.canvasEl.addEventListener(eventName, listener);
-      }
+      eventNames.forEach(eventName => {
+        if (isWindowEvent) {
+          window.addEventListener(eventName, listener);
+        } else {
+          this.canvasEl.addEventListener(eventName, listener);
+        }
+      });
       window.addEventListener('resize', () => {
         this.canvasEl.width = window.innerWidth;
         this.canvasEl.height = window.innerHeight;
@@ -85,27 +88,15 @@
       this.ctx = null;
     }
 
-    update({x = 0, y = 0} = {}) {
-      this._updateMove();
-      this._updateEffect({x, y});
+    update({x = 0, y = 0, type = ''} = {}) {
+      this._updateMove({x, y, type});
+      this._updateEffect({x, y, type});
 
       this.draw();
     }
 
-    _updateMove() {
-      if ( this.x + this.radius > innerWidth || this.x - this.radius < 0 ) {
-        this.velocityX = -this.velocityX;
-      }
-
-      if ( this.y + this.radius > innerHeight || this.y - this.radius < 0 ) {
-        this.velocityY = -this.velocityY;
-      }
-
-      this.x += this.velocityX;
-      this.y += this.velocityY;
-    }
-    _updateEffect({x, y}) {
-    }
+    _updateMove() {}
+    _updateEffect() {}
     draw() {
       this.ctx.beginPath();
       this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -122,6 +113,18 @@
       super(config);
     }
 
+    _updateMove() {
+      if ( this.x + this.radius > innerWidth || this.x - this.radius < 0 ) {
+        this.velocityX = -this.velocityX;
+      }
+
+      if ( this.y + this.radius > innerHeight || this.y - this.radius < 0 ) {
+        this.velocityY = -this.velocityY;
+      }
+
+      this.x += this.velocityX;
+      this.y += this.velocityY;
+    }
     _updateEffect({x, y}) {
       if (x - this.x < 50 && x - this.x > -50
         && y - this.y < 50 && y - this.y > -50) {
@@ -132,6 +135,37 @@
       }
     }
 
+  }
+
+  class GrowingCircle extends BaseCircle {
+    constructor(config) {
+      super(config);
+    }
+
+    _updateMove({x, y}) {
+      this.x = x;
+      this.y = y;
+    }
+
+    _updateEffect({x, y, type}) {
+      if (type === 'click' || this.isContinueEffect) {
+        this.radius += 5;
+        this.isContinueEffect = true;
+      }
+    }
+
+    draw() {
+      this.ctx.fillStyle = 'black';
+      this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      this.ctx.globalCompositeOperation = 'destination-out';
+
+      this.ctx.fillStyle = 'white';
+      this.ctx.beginPath();
+      this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      this.ctx.closePath();
+      this.ctx.fill();
+      this.ctx.globalCompositeOperation = 'source-over';
+    }
   }
 
   function getRandomArbitrary(min, max) {
@@ -170,6 +204,26 @@
       });
       scene.addCircle(rangeCircle);
     }
+    const animate = function () {
+      requestAnimationFrame(animate);
+      scene.render();
+    };
+
+    animate();
+  };
+
+  opernit.telescope = () => {
+    const scene = new Scene({
+      isWindowEvent: false,
+      eventNames: ['mousemove', 'click'],
+      elStyle:  'position: fixed;' +
+                'top: 0;' +
+                'left: 0;' +
+                'z-index: 10;',
+    });
+
+    scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
+
     const animate = function () {
       requestAnimationFrame(animate);
       scene.render();

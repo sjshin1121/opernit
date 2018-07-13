@@ -1,5 +1,6 @@
 import Scene from './Scene.js';
 import RangeCircle from './RangeCircle.js';
+import GrowingCircle from './GrowingCircle.js';
 import { getRandomArbitrary } from './utility.js'
 
 const opernit = {};
@@ -34,6 +35,26 @@ opernit.circles = ({
     });
     scene.addCircle(rangeCircle);
   }
+  const animate = function () {
+    requestAnimationFrame(animate);
+    scene.render();
+  };
+
+  animate();
+};
+
+opernit.telescope = () => {
+  const scene = new Scene({
+    isWindowEvent: false,
+    eventNames: ['mousemove', 'click'],
+    elStyle:  'position: fixed;' +
+              'top: 0;' +
+              'left: 0;' +
+              'z-index: 10;',
+  });
+
+  scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
+
   const animate = function () {
     requestAnimationFrame(animate);
     scene.render();

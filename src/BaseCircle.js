@@ -15,27 +15,15 @@ export default class BaseCircle {
     this.ctx = null;
   }
 
-  update({x = 0, y = 0} = {}) {
-    this._updateMove();
-    this._updateEffect({x, y});
+  update({x = 0, y = 0, type = ''} = {}) {
+    this._updateMove({x, y, type});
+    this._updateEffect({x, y, type});
 
     this.draw();
   }
 
-  _updateMove() {
-    if ( this.x + this.radius > innerWidth || this.x - this.radius < 0 ) {
-      this.velocityX = -this.velocityX;
-    }
-
-    if ( this.y + this.radius > innerHeight || this.y - this.radius < 0 ) {
-      this.velocityY = -this.velocityY;
-    }
-
-    this.x += this.velocityX;
-    this.y += this.velocityY;
-  }
-  _updateEffect({x, y}) {
-  }
+  _updateMove() {}
+  _updateEffect() {}
   draw() {
     this.ctx.beginPath();
     this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
