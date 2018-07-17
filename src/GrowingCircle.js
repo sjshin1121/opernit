@@ -14,6 +14,9 @@ export default class GrowingCircle extends BaseCircle {
     if (type === 'click' || this.isContinueEffect) {
       this.radius += 5;
       this.isContinueEffect = true;
+      if (this.radius > Math.sqrt(Math.pow(window.innerWidth, 2)+Math.pow(window.innerHeight, 2))) {
+        this.dispatch('destroy');
+      }
     }
   }
 

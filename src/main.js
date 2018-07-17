@@ -35,12 +35,8 @@ opernit.circles = ({
     });
     scene.addCircle(rangeCircle);
   }
-  const animate = function () {
-    requestAnimationFrame(animate);
-    scene.render();
-  };
 
-  animate();
+  scene.render()
 };
 
 opernit.telescope = () => {
@@ -55,12 +51,7 @@ opernit.telescope = () => {
 
   scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
 
-  const animate = function () {
-    requestAnimationFrame(animate);
-    scene.render();
-  };
-
-  animate();
+  scene.render()
 };
 
 export default opernit;

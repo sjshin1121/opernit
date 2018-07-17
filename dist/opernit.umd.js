@@ -4,7 +4,33 @@
   (global.opernit = factory());
 }(this, (function () { 'use strict';
 
-  class Scene {
+  const listeners = {};
+
+  class BaseClass {
+    addEvent (type, listener, isGlobal = true) {
+      listeners[type] = listeners[type] || [];
+      if(listeners[type].indexOf(listener) === -1) {
+        listeners[type].push({
+          f: listener,
+          ctx: this,
+          isGlobal: isGlobal
+        });
+      }
+    }
+    dispatch (type) {
+      if(!listeners[type]) return;
+      const evt = listeners[type], params = Array.prototype.slice.call(arguments, 1);
+      let i = evt.length;
+
+
+      while (i--) {
+        if (evt[i].ctx === this || evt[i].isGlobal)
+          evt[i].f.apply(evt[i].ctx, params);
+      }
+    }
+  }
+
+  class Scene extends BaseClass{
     constructor ({
         el,
         width = window.innerWidth,
@@ -16,6 +42,7 @@
                   'left: 0;' +
                   'z-index: -1;',
     } = {}) {
+      super();
       this._initialize(el, width, height, elStyle);
       this._eventInitialize(isWindowEvent, eventNames);
     }
@@ -56,6 +83,8 @@
         this.canvasEl.width = window.innerWidth;
         this.canvasEl.height = window.innerHeight;
       });
+
+      this.addEvent('destroy', this.destroy);
     }
 
     addCircle (circle) {
@@ -63,15 +92,28 @@
       this.circles.push(circle);
     }
 
-    render () {
+    _render() {
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       this.circles.forEach(circle => {
         circle.update(this.mousePosition);
       });
     }
+
+    render () {
+      let animate;
+      (animate = () => {
+        this.animationReq = window.requestAnimationFrame(animate);
+        this._render();
+      })();
+    }
+
+    destroy() {
+      this.canvasEl.parentElement.removeChild(this.canvasEl);
+      window.cancelAnimationFrame(this.animationReq);
+    }
   }
 
-  class BaseCircle {
+  class BaseCircle extends BaseClass{
     constructor({
       x = 0,
       y = 0,
@@ -82,6 +124,7 @@
       velocityX = (Math.random() - 0.5),
       velocityY = (Math.random() - 0.5)
                 } = {}) {
+      super();
 
       Object.assign(this, {x, y, radius, maxRadius, minRadius, color, velocityX, velocityY});
 
@@ -151,6 +194,9 @@
       if (type === 'click' || this.isContinueEffect) {
         this.radius += 5;
         this.isContinueEffect = true;
+        if (this.radius > Math.sqrt(Math.pow(window.innerWidth, 2)+Math.pow(window.innerHeight, 2))) {
+          this.dispatch('destroy');
+        }
       }
     }
 
@@ -204,12 +250,8 @@
       });
       scene.addCircle(rangeCircle);
     }
-    const animate = function () {
-      requestAnimationFrame(animate);
-      scene.render();
-    };
 
-    animate();
+    scene.render();
   };
 
   opernit.telescope = () => {
@@ -224,12 +266,7 @@
 
     scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
 
-    const animate = function () {
-      requestAnimationFrame(animate);
-      scene.render();
-    };
-
-    animate();
+    scene.render();
   };
 
   return opernit;

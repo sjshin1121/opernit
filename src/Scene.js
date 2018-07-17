@@ -1,4 +1,6 @@
-export default class Scene {
+import BaseClass from "./BaseClass";
+
+export default class Scene extends BaseClass{
   constructor ({
       el,
       width = window.innerWidth,
@@ -10,6 +12,7 @@ export default class Scene {
                 'left: 0;' +
                 'z-index: -1;',
   } = {}) {
+    super();
     this._initialize(el, width, height, elStyle);
     this._eventInitialize(isWindowEvent, eventNames);
   }
@@ -50,6 +53,8 @@ export default class Scene {
       this.canvasEl.width = window.innerWidth;
       this.canvasEl.height = window.innerHeight;
     })
+
+    this.addEvent('destroy', this.destroy)
   }
 
   addCircle (circle) {
@@ -57,11 +62,24 @@ export default class Scene {
     this.circles.push(circle);
   }
 
-  render () {
+  _render() {
     this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     this.circles.forEach(circle => {
       circle.update(this.mousePosition);
     })
+  }
+
+  render () {
+    let animate;
+    (animate = () => {
+      this.animationReq = window.requestAnimationFrame(animate);
+      this._render();
+    })();
+  }
+
+  destroy() {
+    this.canvasEl.parentElement.removeChild(this.canvasEl);
+    window.cancelAnimationFrame(this.animationReq);
   }
 };
 

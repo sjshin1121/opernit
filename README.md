@@ -1,13 +1,14 @@
 # opernit
 
-## Synopsis
-
 browser mouse effect using canvas
 
-#### showcase
+## showcase
 * [circles](https://sjshin1121.github.io/opernit/example/circles.html)
 
-## Code Example
+## Installation
+
+
+## API
 
 ```javascript
 opernit.circles({
@@ -23,10 +24,6 @@ opernit.circles({
   maxRadius: 3
 });
 ```
-
-## Installation
-
-
 
 ## License
 

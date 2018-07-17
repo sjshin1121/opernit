@@ -1,4 +1,6 @@
-export default class BaseCircle {
+import BaseClass from "./BaseClass";
+
+export default class BaseCircle extends BaseClass{
   constructor({
     x = 0,
     y = 0,
@@ -9,6 +11,7 @@ export default class BaseCircle {
     velocityX = (Math.random() - 0.5),
     velocityY = (Math.random() - 0.5)
               } = {}) {
+    super();
 
     Object.assign(this, {x, y, radius, maxRadius, minRadius, color, velocityX, velocityY});
 
