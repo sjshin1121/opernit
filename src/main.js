@@ -1,6 +1,6 @@
 import Scene from './Scene.js';
 import RangeCircle from './RangeCircle.js';
-import GrowingCircle from './GrowingCircle.js';
+import TelescopeCircle from './TelescopeCircle.js';
 import { getRandomArbitrary } from './utility.js'
 
 const opernit = {};
@@ -49,7 +49,7 @@ opernit.telescope = () => {
               'z-index: 10;',
   });
 
-  scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
+  scene.addCircle(new TelescopeCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
 
   scene.render()
 };

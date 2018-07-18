@@ -180,7 +180,7 @@
 
   }
 
-  class GrowingCircle extends BaseCircle {
+  class TelescopeCircle extends BaseCircle {
     constructor(config) {
       super(config);
     }
@@ -264,7 +264,7 @@
                 'z-index: 10;',
     });
 
-    scene.addCircle(new GrowingCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
+    scene.addCircle(new TelescopeCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
 
     scene.render();
   };

@@ -1,6 +1,6 @@
 import BaseCircle from './BaseCircle.js';
 
-export default class GrowingCircle extends BaseCircle {
+export default class TelescopeCircle extends BaseCircle {
   constructor(config) {
     super(config);
   }
