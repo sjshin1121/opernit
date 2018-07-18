@@ -4,6 +4,7 @@ browser mouse effect using canvas
 
 ## showcase
 * [circles](https://sjshin1121.github.io/opernit/example/circles.html)
+* [telescope](https://sjshin1121.github.io/opernit/example/telescope.html)
 
 ## Installation
 
