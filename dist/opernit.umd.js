@@ -82,6 +82,7 @@
       window.addEventListener('resize', () => {
         this.canvasEl.width = window.innerWidth;
         this.canvasEl.height = window.innerHeight;
+        this._rePositionOutCircles();
       });
 
       this.addEvent('destroy', this.destroy);
@@ -90,6 +91,13 @@
     addCircle (circle) {
       circle.ctx = this.ctx;
       this.circles.push(circle);
+    }
+
+    _rePositionOutCircles() {
+      this.circles.forEach(circle => {
+        if (circle.x > this.canvasEl.width) circle.x = this.canvasEl.width - circle.radius;
+        if (circle.y > this.canvasEl.height) circle.y = this.canvasEl.height - circle.radius;
+      });
     }
 
     _render() {
