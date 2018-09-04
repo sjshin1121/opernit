@@ -103,7 +103,7 @@
     _render() {
       this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       this.circles.forEach(circle => {
-        circle.update(this.mousePosition);
+        circle.update(this.mousePosition, this.circles);
       });
     }
 
@@ -139,8 +139,8 @@
       this.ctx = null;
     }
 
-    update({x = 0, y = 0, type = ''} = {}) {
-      this._updateMove({x, y, type});
+    update({x = 0, y = 0, type = ''} = {}, circles) {
+      this._updateMove({x, y, type}, circles);
       this._updateEffect({x, y, type});
 
       this.draw();
@@ -226,6 +226,95 @@
     return Math.random() * (max - min) + min;
   }
 
+
+  function rotate(velocityX, velocityY, angle) {
+    const rotatedVelocities = {
+      x: velocityX * Math.cos(angle) - velocityY * Math.sin(angle),
+      y: velocityX * Math.sin(angle) + velocityY * Math.cos(angle)
+    };
+
+    return rotatedVelocities;
+  }
+
+  function resolveCollision(particle, otherParticle) {
+    const xVelocityDiff = particle.velocityX - otherParticle.velocityX;
+    const yVelocityDiff = particle.velocityY - otherParticle.velocityY;
+
+    const xDist = otherParticle.x - particle.x;
+    const yDist = otherParticle.y - particle.y;
+
+    // Prevent accidental overlap of particles
+    if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+
+      // Grab angle between the two colliding particles
+      const angle = -Math.atan2(otherParticle.y - particle.y, otherParticle.x - particle.x);
+
+      // Store mass in var for better readability in collision equation
+      const m1 = particle.mass;
+      const m2 = otherParticle.mass;
+
+      // Velocity before equation
+      const u1 = rotate(particle.velocityX, particle.velocityY, angle);
+      const u2 = rotate(otherParticle.velocityX, otherParticle.velocityY, angle);
+
+
+      // Velocity after 1d collision equation
+      const v1 = { x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2), y: u1.y };
+      const v2 = { x: u2.x * (m1 - m2) / (m1 + m2) + u1.x * 2 * m2 / (m1 + m2), y: u2.y };
+
+      // Final velocity after rotating axis back to original location
+      const vFinal1 = rotate(v1.x, v1.y, -angle);
+      const vFinal2 = rotate(v2.x, v2.y, -angle);
+
+      // Swap particle velocities for realistic bounce effect
+      particle.velocityX = vFinal1.x;
+      particle.velocityY = vFinal1.y;
+
+      otherParticle.velocityX = vFinal2.x;
+      otherParticle.velocityY = vFinal2.y;
+    }
+  }
+
+  function distance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
+  }
+
+  class RangeCircle$1 extends BaseCircle{
+    constructor(config) {
+      super(config);
+      this.mass = 1;
+    }
+
+    _updateMove(mousePointer, circles) {
+      circles.forEach(circle => {
+        if (this === circle) return;
+
+        if (distance(this.x, this.y, circle.x, circle.y) - this.radius * 2 < 0) {
+          resolveCollision(this, circle);
+        }
+      });
+
+      if ( this.x + this.radius > innerWidth || this.x - this.radius < 0 ) {
+        this.velocityX = -this.velocityX;
+      }
+
+      if ( this.y + this.radius > innerHeight || this.y - this.radius < 0 ) {
+        this.velocityY = -this.velocityY;
+      }
+
+      this.x += this.velocityX;
+      this.y += this.velocityY;
+    }
+    _updateEffect({x, y}) {
+
+      if (distance(this.x, this.y, x, y) - this.radius * 2 < 0) {
+        console.log(distance(this.x, this.y, x, y));
+        resolveCollision(this, { x, y, mass: 4, velocityX: -this.velocityX, velocityY: -this.velocityY});
+      }
+    }
+
+  }
+
   const opernit = {};
 
   opernit.circles = ({
@@ -273,6 +362,52 @@
     });
 
     scene.addCircle(new TelescopeCircle({ radius: 50, color: 'rgba(255, 255, 255, 0.1)' }));
+
+    scene.render();
+  };
+
+  opernit.collisionCircle = ({
+                               color = [
+                                 '#fffdb7',
+                                 '#aef4a4',
+                                 '#79b8d1',
+                                 '#e36488',
+                               ],
+                               size = 100,
+                               effectRadius = 40,
+                               minRadius = 20,
+                               maxRadius = 20
+                             } = {}) => {
+
+    const scene = new Scene({
+      isWindowEvent: true
+    });
+    for (let i = 0, j = size; i < j; i++) {
+      const radius = getRandomArbitrary(minRadius, maxRadius);
+      const rangeCircle = new RangeCircle$1({
+        x: Math.random() * (window.innerWidth - radius * 2) + radius,
+        y: Math.random() * (window.innerHeight - radius * 2) + radius,
+        radius: radius,
+        minRadius: radius,
+        MaxRadius: effectRadius,
+        color: Array.isArray(color) ? color[Math.floor(Math.random() * color.length)] : color,
+        velocityX: (Math.random() - 0.5),
+        velocityY: (Math.random() - 0.5),
+      });
+
+      if (i !== 0) {
+        let m, n;
+        for (m = 0, n = scene.circles.length; m < n; m++) {
+          if (distance(rangeCircle.x, rangeCircle.y, scene.circles[m].x, scene.circles[m].y) - radius * 2 < 0) {
+            rangeCircle.x = Math.random() * (window.innerWidth - radius * 2) + radius;
+            rangeCircle.y = Math.random() * (window.innerHeight - radius * 2) + radius;
+
+            m = -1;
+          }
+        }
+      }
+      scene.addCircle(rangeCircle);
+    }
 
     scene.render();
   };

@@ -18,8 +18,8 @@ export default class BaseCircle extends BaseClass{
     this.ctx = null;
   }
 
-  update({x = 0, y = 0, type = ''} = {}) {
-    this._updateMove({x, y, type});
+  update({x = 0, y = 0, type = ''} = {}, circles) {
+    this._updateMove({x, y, type}, circles);
     this._updateEffect({x, y, type});
 
     this.draw();

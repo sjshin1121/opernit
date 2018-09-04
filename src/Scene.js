@@ -73,7 +73,7 @@ export default class Scene extends BaseClass{
   _render() {
     this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     this.circles.forEach(circle => {
-      circle.update(this.mousePosition);
+      circle.update(this.mousePosition, this.circles);
     })
   }
 
