@@ -21,7 +21,7 @@ export default class TelescopeCircle extends BaseCircle {
   }
 
   draw() {
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = this.color;
     this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     this.ctx.globalCompositeOperation = 'destination-out';
 
