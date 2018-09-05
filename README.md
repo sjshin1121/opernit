@@ -3,15 +3,16 @@
 browser mouse effect using canvas
 
 ## showcase
-* [bubbleCircles](https://sjshin1121.github.io/opernit/example/bubblCircles.html)
+* [bubbleCircles](https://sjshin1121.github.io/opernit/example/bubbleCircles.html)
 * [telescope](https://sjshin1121.github.io/opernit/example/telescope.html)
+* [collisionCircles](https://sjshin1121.github.io/opernit/example/collisionCircles.html)
 
 ## Installation
 
 
 ## API
 
-#### opernit.bubbleCircles()
+### opernit.bubbleCircles()
 
 **discription**
  * 원이 마우스 포인터를 만나면 커지는 효과가 있음
@@ -39,8 +40,9 @@ opernit.bubbleCircles({
   maxRadius: 3
 });
 ```
+***
 
-#### opernit.collisionCircles()
+### opernit.collisionCircles()
 
 **discription**
  * 원끼리 부딪히는 효과가 있음
@@ -64,8 +66,9 @@ opernit.collisionCircles({
     radius: 20,
 });
 ```
+***
 
-#### opernit.telescope()
+### opernit.telescope()
 
 **discription**
  * 원이 점점 커지면서 사라지는 효과
