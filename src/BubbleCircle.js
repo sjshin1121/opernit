@@ -1,6 +1,6 @@
 import BaseCircle from './BaseCircle.js';
 
-export default class RangeCircle extends BaseCircle{
+export default class BubbleCircle extends BaseCircle{
   constructor(config) {
     super(config);
   }

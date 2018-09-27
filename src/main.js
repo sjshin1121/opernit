@@ -1,5 +1,5 @@
 import Scene from './Scene.js';
-import RangeCircle from './RangeCircle.js';
+import BubbleCircle from './BubbleCircle.js';
 import TelescopeCircle from './TelescopeCircle.js';
 import CollisionCircle from './CollisionCircle';
 import { getRandomArbitrary, distance } from './utility.js'
@@ -24,7 +24,7 @@ opernit.bubbleCircles = ({
   });
   for (let i = 0, j = size; i < j; i++) {
     const radius = getRandomArbitrary(minRadius, maxRadius);
-    const rangeCircle = new RangeCircle({
+    const rangeCircle = new BubbleCircle({
       x: Math.random() * (window.innerWidth - radius * 2) + radius,
       y: Math.random() * (window.innerHeight - radius * 2) + radius,
       radius: radius,

@@ -159,7 +159,7 @@
 
   }
 
-  class RangeCircle extends BaseCircle{
+  class BubbleCircle extends BaseCircle{
     constructor(config) {
       super(config);
     }
@@ -279,7 +279,7 @@
     return Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
   }
 
-  class RangeCircle$1 extends BaseCircle{
+  class RangeCircle extends BaseCircle{
     constructor(config) {
       super(config);
       this.mass = 1;
@@ -335,7 +335,7 @@
     });
     for (let i = 0, j = size; i < j; i++) {
       const radius = getRandomArbitrary(minRadius, maxRadius);
-      const rangeCircle = new RangeCircle({
+      const rangeCircle = new BubbleCircle({
         x: Math.random() * (window.innerWidth - radius * 2) + radius,
         y: Math.random() * (window.innerHeight - radius * 2) + radius,
         radius: radius,
@@ -385,7 +385,7 @@
       isWindowEvent: true
     });
     for (let i = 0, j = size; i < j; i++) {
-      const collisionCircle = new RangeCircle$1({
+      const collisionCircle = new RangeCircle({
         x: Math.random() * (window.innerWidth - radius * 2) + radius,
         y: Math.random() * (window.innerHeight - radius * 2) + radius,
         radius: radius,
