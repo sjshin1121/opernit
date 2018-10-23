@@ -6,6 +6,7 @@ browser mouse effect using canvas
 * [bubbleCircles](https://sjshin1121.github.io/opernit/example/bubbleCircles.html)
 * [telescope](https://sjshin1121.github.io/opernit/example/telescope.html)
 * [collisionCircles](https://sjshin1121.github.io/opernit/example/collisionCircles.html)
+* [gravityCircles](https://sjshin1121.github.io/opernit/example/gravityCircles.html)
 
 ## Installation
 
@@ -88,6 +89,39 @@ opernit.collisionCircles({
              'top: 0;' +
              'left: 0;' +
              'z-index: 10;'
+});
+```
+
+***
+
+### opernit.gravityCircles()
+
+**discription**
+ * 원이 점점 커지면서 사라지는 효과
+
+**parameter**
+ * ?object:Object
+    * ?color:Array - 원 초기 반지름
+    * ?size:Number - 원을 제외한 나머지 부분 색깔
+    * ?gravity:Number
+    * ?friction:Number
+    * ?minRadius:Number
+    * ?maxRadius:Number
+
+**example**
+```javascript
+opernit.collisionCircles({
+    color: [
+      '#fffdb7',
+      '#aef4a4',
+      '#79b8d1',
+      '#e36488',
+    ],
+    size: 50,
+    gravity: 1,
+    friction: 0.99,
+    minRadius: 30,
+    maxRadius: 50
 });
 ```
 
