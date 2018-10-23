@@ -306,10 +306,40 @@
       this.y += this.velocityY;
     }
     _updateEffect({x, y}) {
-
       if (distance(this.x, this.y, x, y) - this.radius * 2 < 0) {
-        console.log(distance(this.x, this.y, x, y));
         resolveCollision(this, { x, y, mass: 4, velocityX: -this.velocityX, velocityY: -this.velocityY});
+      }
+    }
+
+  }
+
+  class GravityCircle extends BaseCircle{
+    constructor({ friction, gravity, ...config }) {
+      super(config);
+
+      Object.assign(this, {friction, gravity});
+    }
+
+    _updateMove() {
+      if (this.y + this.radius + this.velocityY> innerHeight) {
+        this.velocityY = -this.velocityY;
+        this.velocityY = this.velocityY * this.friction;
+        this.velocityX = this.velocityX * this.friction;
+      } else {
+        this.velocityY += this.gravity;
+      }
+
+      if (this.x + this.radius >= innerWidth || this.x - this.radius <= 0) {
+        this.velocityX = -this.velocityX * this.friction;
+      }
+
+      this.x += this.velocityX;
+      this.y += this.velocityY;
+    }
+    _updateEffect({x, y}) {
+      if (x - this.x < 50 && x - this.x > -50
+        && y - this.y < 50 && y - this.y > -50) {
+        this.velocityY += 5;
       }
     }
 
@@ -406,6 +436,39 @@
         }
       }
       scene.addCircle(collisionCircle);
+    }
+
+    scene.render();
+  };
+
+  opernit.gravityCircles = ({
+                              color = [
+                                '#fffdb7',
+                                '#aef4a4',
+                                '#79b8d1',
+                                '#e36488',
+                              ],
+                              size = 50,
+                              gravity = 1,
+                              friction = 0.99,
+                              minRadius = 30,
+                              maxRadius = 50
+                            } = {}) => {
+
+    const scene = new Scene({
+      isWindowEvent: true
+    });
+    for (let i = 0, j = size; i < j; i++) {
+      const radius = getRandomArbitrary(minRadius, maxRadius);
+      const gravityCircle = new GravityCircle({
+        x: Math.random() * (window.innerWidth - radius * 2) + radius,
+        y: Math.random() * (window.innerHeight - radius * 2) + radius,
+        color: Array.isArray(color) ? color[Math.floor(Math.random() * color.length)] : color,
+        velocityX: (Math.random() - 0.5),
+        velocityY: (Math.random() - 0.5),
+        gravity, friction, radius
+      });
+      scene.addCircle(gravityCircle);
     }
 
     scene.render();

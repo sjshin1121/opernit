@@ -28,9 +28,7 @@ export default class RangeCircle extends BaseCircle{
     this.y += this.velocityY;
   }
   _updateEffect({x, y}) {
-
     if (distance(this.x, this.y, x, y) - this.radius * 2 < 0) {
-      console.log(distance(this.x, this.y, x, y));
       resolveCollision(this, { x, y, mass: 4, velocityX: -this.velocityX, velocityY: -this.velocityY});
     }
   }

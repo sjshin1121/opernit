@@ -2,6 +2,7 @@ import Scene from './Scene.js';
 import BubbleCircle from './BubbleCircle.js';
 import TelescopeCircle from './TelescopeCircle.js';
 import CollisionCircle from './CollisionCircle';
+import GravityCircle from './GravityCircle'
 import { getRandomArbitrary, distance } from './utility.js'
 
 const opernit = {};
@@ -95,6 +96,39 @@ opernit.collisionCircles = ({
       }
     }
     scene.addCircle(collisionCircle);
+  }
+
+  scene.render()
+};
+
+opernit.gravityCircles = ({
+                            color = [
+                              '#fffdb7',
+                              '#aef4a4',
+                              '#79b8d1',
+                              '#e36488',
+                            ],
+                            size = 50,
+                            gravity = 1,
+                            friction = 0.99,
+                            minRadius = 30,
+                            maxRadius = 50
+                          } = {}) => {
+
+  const scene = new Scene({
+    isWindowEvent: true
+  });
+  for (let i = 0, j = size; i < j; i++) {
+    const radius = getRandomArbitrary(minRadius, maxRadius);
+    const gravityCircle = new GravityCircle({
+      x: Math.random() * (window.innerWidth - radius * 2) + radius,
+      y: Math.random() * (window.innerHeight - radius * 2) + radius,
+      color: Array.isArray(color) ? color[Math.floor(Math.random() * color.length)] : color,
+      velocityX: (Math.random() - 0.5),
+      velocityY: (Math.random() - 0.5),
+      gravity, friction, radius
+    });
+    scene.addCircle(gravityCircle);
   }
 
   scene.render()

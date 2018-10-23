@@ -9,7 +9,8 @@ export default [
     output: {
       name: 'opernit',
       file: pkg.browser,
-      format: 'umd'
+      format: 'umd',
+      sourceMap: 'inline'
     },
     plugins: [
       resolve(), // so Rollup can find `ms`
