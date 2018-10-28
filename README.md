@@ -8,8 +8,9 @@ browser mouse effect using canvas
 * [collisionCircles](https://sjshin1121.github.io/opernit/example/collisionCircles.html)
 * [gravityCircles](https://sjshin1121.github.io/opernit/example/gravityCircles.html)
 
-## Installation
-
+## To-do
+- [ ] canvasRender 분리하여 처리하기
+- [ ] 서클 포함한 다른 오브젝트 일반화
 
 ## API
 
@@ -124,10 +125,6 @@ opernit.collisionCircles({
     maxRadius: 50
 });
 ```
-
-## To-do
-- [ ] canvasRender 분리하여 처리하기
-- [ ] 서클 포함한 다른 오브젝트 일반화 
 
 ## License
 
