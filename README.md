@@ -16,7 +16,7 @@ browser mouse effect using canvas
 ### opernit.bubbleCircles()
 
 **discription**
- * 원이 마우스 포인터를 만나면 커지는 효과가 있음
+ * 원이 마우스 포인터를 만나면 커지는 효과
 
 **parameter**
  * ?object:Object
@@ -46,7 +46,7 @@ opernit.bubbleCircles({
 ### opernit.collisionCircles()
 
 **discription**
- * 원끼리 부딪히는 효과가 있음
+ * 원끼리 부딪히는 효과
 
 **parameter**
  * ?object:Object
@@ -97,7 +97,7 @@ opernit.collisionCircles({
 ### opernit.gravityCircles()
 
 **discription**
- * 원이 점점 커지면서 사라지는 효과
+ * 원이 바닥에 부딪히는 
 
 **parameter**
  * ?object:Object
@@ -124,6 +124,10 @@ opernit.collisionCircles({
     maxRadius: 50
 });
 ```
+
+## To-do
+- [ ] canvasRender 분리하여 처리하기
+- [ ] 서클 포함한 다른 오브젝트 일반화 
 
 ## License
 
